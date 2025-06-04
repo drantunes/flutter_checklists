@@ -16,10 +16,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: Routes.checklists,
-      builder: (context, state) {
-        // final id = state.pathParameters['id'];
-        return ChecklistsScreen();
-      },
+      builder: (context, state) => ChecklistsScreen(),
     ),
   ],
 );
