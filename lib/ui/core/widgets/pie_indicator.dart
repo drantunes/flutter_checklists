@@ -13,21 +13,26 @@ class PieIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        border: Border.all(color: themeColor, width: 3),
-        borderRadius: BorderRadius.circular(100),
-        color: (value == 1) ? themeColor : null,
-      ),
-      child: (value == 1)
-          ? Icon(Icons.check, size: size - 10, color: Colors.white)
-          : CircularProgressIndicator(
-              value: value,
-              strokeWidth: size / 2,
-              strokeAlign: BorderSide.strokeAlignInside,
-            ),
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            border: Border.all(color: ChecklistTheme.themeColor, width: 3),
+            borderRadius: BorderRadius.circular(size),
+            color: (value == 1) ? ChecklistTheme.themeColor : null,
+          ),
+        ),
+        (value == 1)
+            ? Icon(Icons.check, size: size - 10, color: Colors.white)
+            : CircularProgressIndicator(
+                value: value,
+                strokeWidth: size / 2,
+                strokeAlign: BorderSide.strokeAlignInside,
+              ),
+      ],
     );
   }
 }

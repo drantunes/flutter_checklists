@@ -10,7 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       title: 'Checklist',
       debugShowCheckedModeBanner: false,
-      theme: themeData,
+      theme: ChecklistTheme.themeData,
       routerConfig: router,
     );
   }
