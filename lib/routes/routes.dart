@@ -2,9 +2,12 @@ import 'package:flutter_checklist/ui/checklists/checklists_date_screen.dart';
 import 'package:flutter_checklist/ui/checklists/checklists_items_screen.dart';
 import 'package:flutter_checklist/ui/checklists/checklists_note_screen.dart';
 import 'package:flutter_checklist/ui/checklists/checklists_screen.dart';
+import 'package:flutter_checklist/ui/checklists/checklists_viewmodel.dart';
 import 'package:flutter_checklist/ui/core/widgets/error_screen.dart';
 import 'package:flutter_checklist/ui/home/home_screen.dart';
+import 'package:flutter_checklist/ui/home/home_viewmodel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class Routes {
   static final home = '/';
@@ -20,12 +23,20 @@ final router = GoRouter(
     GoRoute(
       name: Routes.home,
       path: Routes.home,
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) {
+        final viewModel = HomeViewmodel();
+        return HomeScreen(viewmodel: viewModel);
+      },
     ),
     GoRoute(
       name: Routes.checklists,
       path: Routes.checklists,
-      builder: (context, state) => ChecklistsScreen(),
+      builder: (context, state) {
+        final viewModel = ChecklistsViewmodel(
+          checklistRepository: context.read(),
+        )..loadChecklists();
+        return ChecklistsScreen(viewModel: viewModel);
+      },
     ),
     GoRoute(
       name: Routes.checklistsDate,
@@ -34,17 +45,33 @@ final router = GoRouter(
         final dateId = state.pathParameters['dateId'];
         if (dateId == null) return ErrorScreen();
 
-        return ChecklistsDateScreen(dateId: dateId);
+        final viewModel = ChecklistsViewmodel(
+          checklistRepository: context.read(),
+        )..loadChecklistByDate(dateId);
+
+        return ChecklistsDateScreen(
+          dateId: dateId,
+          viewModel: viewModel,
+        );
       },
     ),
     GoRoute(
       name: Routes.checklistsDateItems,
       path: Routes.checklistsDateItems,
       builder: (context, state) {
+        final dateId = state.pathParameters['dateId'];
         final itemsId = state.pathParameters['itemsId'];
-        if (itemsId == null) return ErrorScreen();
 
-        return ChecklistsItemsScreen(category: itemsId);
+        if (itemsId == null || dateId == null) return ErrorScreen();
+
+        final viewModel = ChecklistsViewmodel(
+          checklistRepository: context.read(),
+        )..loadTasksByCategory(dateId, itemsId);
+
+        return ChecklistsItemsScreen(
+          category: itemsId,
+          viewmodel: viewModel,
+        );
       },
     ),
     GoRoute(
