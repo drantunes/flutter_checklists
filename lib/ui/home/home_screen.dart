@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_checklist/data/repositories/user_repository.dart';
 import 'package:flutter_checklist/routes/routes.dart';
 import 'package:flutter_checklist/ui/checklists/checklists_viewmodel.dart';
 import 'package:flutter_checklist/ui/core/widgets/full_button.dart';
 import 'package:flutter_checklist/ui/core/widgets/outlined_full_button.dart';
 import 'package:flutter_checklist/ui/home/home_viewmodel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.viewmodel});
@@ -39,17 +41,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Image.asset('assets/images/checklist_logo.png'),
                       ),
                       Text(
-                        viewModel.title,
+                        'Log Checklist',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (viewModel.error.isNotEmpty) Text(viewModel.error),
-                      SwitchListTile(
-                        title: Text('Opção?'),
-                        value: viewModel.option,
-                        onChanged: (newVal) => viewModel.saveOption(newVal),
+
+                      (viewModel.loading)
+                          ? SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(),
+                            )
+                          : Switch(
+                              value: viewModel.option,
+                              onChanged: (newVal) => viewModel.saveOption(newVal),
+                            ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<UserRepository>().logout();
+                        },
+                        child: Text('Sair'),
                       ),
                     ],
                   ),

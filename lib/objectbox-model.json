@@ -1,0 +1,71 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3960984888342158501",
+      "lastPropertyId": "2:5899436723301470051",
+      "name": "ChecklistBox",
+      "properties": [
+        {
+          "id": "1:6588602723698952371",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5899436723301470051",
+          "name": "date",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "1:2848075145250565363"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:3397873879458457040",
+      "lastPropertyId": "4:5938591127276113797",
+      "name": "ChecklistTasksBox",
+      "properties": [
+        {
+          "id": "1:3825381366691888558",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2133738071133060218",
+          "name": "category",
+          "type": 9
+        },
+        {
+          "id": "3:5678689892512552120",
+          "name": "completedTasks",
+          "type": 30
+        },
+        {
+          "id": "4:5938591127276113797",
+          "name": "checklistId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:4738978815607999161",
+          "relationTarget": "ChecklistBox"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:3397873879458457040",
+  "lastIndexId": "2:4738978815607999161",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

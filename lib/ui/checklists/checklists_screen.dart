@@ -31,7 +31,7 @@ class _ChecklistsScreenState extends State<ChecklistsScreen> {
             centerTitle: true,
           ),
           body: items.isEmpty
-              ? CircularProgressIndicator()
+              ? Center(child: CircularProgressIndicator())
               : ListView.separated(
                   padding: EdgeInsets.all(12),
 

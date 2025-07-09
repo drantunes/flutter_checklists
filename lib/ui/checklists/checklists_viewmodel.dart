@@ -6,15 +6,15 @@ import 'package:flutter_checklist/domain/models/checklist_task.dart';
 
 class ChecklistsViewmodel extends ChangeNotifier {
   final ChecklistRepository checklistRepository;
+
   List<Checklist> checklists = [];
   Checklist? currentChecklist;
   ChecklistCategory? currentCategory;
 
   ChecklistsViewmodel({required this.checklistRepository});
 
-  loadChecklists() {
-    checklistRepository.loadChecklists();
-    checklists = checklistRepository.checklists;
+  loadChecklists() async {
+    checklists = await checklistRepository.loadChecklists();
     notifyListeners();
   }
 
@@ -23,6 +23,7 @@ class ChecklistsViewmodel extends ChangeNotifier {
     currentChecklist = checklistRepository.checklists.firstWhere(
       (Checklist checklist) => checklist.date == date,
     );
+
     notifyListeners();
   }
 
@@ -30,6 +31,7 @@ class ChecklistsViewmodel extends ChangeNotifier {
     loadChecklistByDate(dateId);
     int index = int.parse(itemsId);
     currentCategory = currentChecklist!.categories[index];
+
     notifyListeners();
   }
 
@@ -40,7 +42,11 @@ class ChecklistsViewmodel extends ChangeNotifier {
       currentCategory?.completedTasks.remove(item.name);
     }
 
+    checklistRepository.updateTask(currentChecklist!, currentCategory!, item.name, value);
+
     checkIfCategoryIsCompleted();
+
+    loadChecklists();
 
     notifyListeners();
   }
@@ -48,11 +54,13 @@ class ChecklistsViewmodel extends ChangeNotifier {
   checkIfCategoryIsCompleted() {
     if (currentCategory!.completedTasks.length == currentCategory!.tasks.length) {
       currentChecklist!.completedCategories.add(currentCategory!.name);
+    } else {
+      currentChecklist!.completedCategories.remove(currentCategory!.name);
     }
   }
 }
 
 String getToday() {
   final date = DateTime.now();
-  return '${date.day}/${date.month}/${date.year}';
+  return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
 }
