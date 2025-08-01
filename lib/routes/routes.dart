@@ -60,7 +60,10 @@ final router = GoRouter(
       path: Routes.home,
       builder: (context, state) {
         final repository = OptionRepository(localStorageService: LocalStorageService());
-        final viewModel = HomeViewmodel(optionRepository: repository);
+        final viewModel = HomeViewmodel(
+          optionRepository: repository,
+          userRepository: context.read(),
+        );
 
         return HomeScreen(viewmodel: viewModel);
       },

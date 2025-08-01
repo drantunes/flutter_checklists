@@ -27,6 +27,7 @@ class ChecklistRepository {
     final api = ChecklistApiService();
     final checklistData = await api.getChecklist();
 
+    // TODO: Desacoplar ObjectBox para um classe abstrata
     // Abro o armzenamento no Objectbox
     final checklistBox = objectbox.store.box<ChecklistBox>();
 

@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_checklist/data/repositories/option_repository.dart';
+import 'package:flutter_checklist/data/repositories/user_repository.dart';
 
 class HomeViewmodel extends ChangeNotifier {
   final OptionRepository optionRepository;
+  final UserRepository userRepository;
 
   bool option = false;
   bool loading = true;
 
-  HomeViewmodel({required this.optionRepository}) {
+  HomeViewmodel({required this.optionRepository, required this.userRepository}) {
     loadOption();
   }
 
@@ -26,5 +28,9 @@ class HomeViewmodel extends ChangeNotifier {
     await optionRepository.save(option);
 
     notifyListeners();
+  }
+
+  void logout() {
+    userRepository.logout();
   }
 }

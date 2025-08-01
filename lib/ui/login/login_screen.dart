@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_checklist/ui/core/widgets/full_button.dart';
 import 'package:flutter_checklist/ui/core/widgets/outlined_full_button.dart';
 import 'package:flutter_checklist/ui/login/login_viewmodel.dart';
+import 'package:flutter_checklist/utils/result.dart';
 
 class LoginScreen extends StatefulWidget {
   final LoginViewmodel loginViewmodel;
@@ -21,7 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      widget.loginViewmodel.login(email, password);
+      widget.loginViewmodel.login.execute(
+        (email: email, password: password),
+      );
     }
   }
 
@@ -29,7 +32,31 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      widget.loginViewmodel.createUserAndLoggedIn(email, password);
+      widget.loginViewmodel.createUserAndLoggin.execute(
+        (email: email, password: password),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      widget.loginViewmodel.login.addListener(checkError);
+    }
+  }
+
+  checkError() {
+    final loginCommand = widget.loginViewmodel.login;
+    if (loginCommand.error) {
+      final result = loginCommand.result as Error;
+      if (result.error.contains('Failed to authenticate')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Usuário ou senha incorretos!'),
+          ),
+        );
+      }
     }
   }
 
@@ -66,13 +93,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Informe sua senha';
                   }
+                  if (value.length <= 8) {
+                    return 'A senha precisa ser >= 8 caracteres';
+                  }
                   return null;
                 },
               ),
               SizedBox(height: 24),
-              FullButton(
-                onPressed: _login,
-                label: 'Entrar',
+              ListenableBuilder(
+                listenable: widget.loginViewmodel.login,
+                builder: (context, _) {
+                  if (widget.loginViewmodel.login.running) {
+                    return FullButton(
+                      onPressed: () {},
+                      label: 'Entrando...',
+                    );
+                  }
+                  return FullButton(
+                    onPressed: _login,
+                    label: 'Entrar',
+                  );
+                },
               ),
               SizedBox(height: 24),
               OutlinedFullButton(
@@ -90,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    widget.loginViewmodel.login.removeListener(checkError);
     super.dispose();
   }
 }
