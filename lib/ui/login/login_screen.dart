@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Informe sua senha';
                   }
-                  if (value.length <= 8) {
+                  if (value.length < 8) {
                     return 'A senha precisa ser >= 8 caracteres';
                   }
                   return null;
