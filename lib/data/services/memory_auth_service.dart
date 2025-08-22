@@ -1,3 +1,4 @@
+import 'package:flutter_checklist/data/repositories/user_repository.dart';
 import 'package:flutter_checklist/data/services/auth_service.dart';
 import 'package:flutter_checklist/utils/result.dart';
 
@@ -29,6 +30,7 @@ class MemoryAuthService extends AuthService {
   @override
   Future<bool> logout() async {
     userId = '';
+    authState.value = AuthStatus.loggedOut;
     return true;
   }
 

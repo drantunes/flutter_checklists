@@ -9,6 +9,7 @@ void main() async {
   final objectBox = await ObjectboxService.create();
 
   final userRepository = UserRepository(PocketbaseAuthService());
+  // final userRepository = UserRepository(MemoryAuthService());
   userRepository.checkIfUserIsLoggedIn();
 
   runApp(

@@ -40,25 +40,28 @@ class _ChecklistsScreenState extends State<ChecklistsScreen> {
                         widget.viewModel.checklists[index].completedCategories.length;
                     final total = widget.viewModel.checklists[index].categories.length;
 
-                    return ListTile(
-                      leading: PieIndicator(
-                        size: 40,
-                        value: done / total,
-                      ),
-                      title: Text(
-                        items[index].date,
-                        style: ChecklistTheme.titleTextStyle,
-                      ),
-                      subtitle: Text(
-                        '$done de $total concluídos',
-                        style: ChecklistTheme.subtitleTextStyle,
-                      ),
-                      trailing: Icon(Icons.chevron_right),
-                      onTap: () => context.pushNamed(
-                        Routes.checklistsDate,
-                        pathParameters: {
-                          'dateId': widget.viewModel.checklists[index].date,
-                        },
+                    return Semantics(
+                      identifier: items[index].date.replaceAll('/', '.'),
+                      child: ListTile(
+                        leading: PieIndicator(
+                          size: 40,
+                          value: done / total,
+                        ),
+                        title: Text(
+                          items[index].date,
+                          style: ChecklistTheme.titleTextStyle,
+                        ),
+                        subtitle: Text(
+                          '$done de $total concluídos',
+                          style: ChecklistTheme.subtitleTextStyle,
+                        ),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: () => context.pushNamed(
+                          Routes.checklistsDate,
+                          pathParameters: {
+                            'dateId': widget.viewModel.checklists[index].date,
+                          },
+                        ),
                       ),
                     );
                   },

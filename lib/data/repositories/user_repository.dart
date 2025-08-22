@@ -57,11 +57,12 @@ class UserRepository {
     return Result.error('Erro desconhecido');
   }
 
-  void logout() async {
+  Future<void> logout() async {
     final loggedOut = await authService.logout();
     if (loggedOut) {
       _authState.value = AuthStatus.loggedOut;
     }
+    return Future.delayed(Duration.zero);
   }
 
   void checkIfUserIsLoggedIn() async {
