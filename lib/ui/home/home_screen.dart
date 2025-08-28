@@ -15,7 +15,24 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final viewModel = widget.viewmodel;
@@ -34,9 +51,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     spacing: 24,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 130,
-                        child: Image.asset('assets/images/checklist_logo.png'),
+                      AnimatedBuilder(
+                        animation: animationController,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: animationController.value * 2 * 3.141592653589793,
+                            child: Transform.scale(
+                              scale: 1 + 0.1 * (1 - animationController.value),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 130,
+                          child: Image.asset('assets/images/checklist_logo.png'),
+                        ),
                       ),
                       Text(
                         'Log Checklist',
