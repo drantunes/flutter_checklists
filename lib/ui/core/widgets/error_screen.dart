@@ -18,7 +18,7 @@ class ErrorScreen extends StatelessWidget {
               height: 150,
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'Esta Rota não existe!',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,

@@ -27,6 +27,19 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ChecklistTheme.themeData,
         routerConfig: router,
+        builder: (context, widget) {
+          Widget error = const Text('Algo inesperado ocorreu!');
+          if (widget is Scaffold || widget is Navigator) {
+            error = Scaffold(
+              body: Center(
+                child: error,
+              ),
+            );
+          }
+          ErrorWidget.builder = (errorDetails) => error;
+          if (widget != null) return widget;
+          throw StateError('Widget is null');
+        },
       ),
     );
   }
